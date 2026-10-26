@@ -1899,10 +1899,18 @@
 
         // RESET: Always start from page 0 on load
         (function resetToFirstPage() {
+            const numPages = pages.length;
             pages.forEach((page, index) => {
                 page.classList.remove('flipped', 'flipping', 'dragging');
                 page.style.transform = '';
-                page.style.zIndex = 100 - index;
+                // Page 0 should be on top (highest z-index), rest below
+                if (index === 0) {
+                    page.style.zIndex = numPages + 100;
+                    page.style.pointerEvents = 'auto';
+                } else {
+                    page.style.zIndex = numPages - index + 100;
+                    page.style.pointerEvents = 'none';
+                }
 
                 // Set loading attribute based on page position
                 page.querySelectorAll('img[src]').forEach(img => {
