@@ -1575,22 +1575,26 @@
                 page.classList.remove('flipped', 'flipping', 'dragging');
                 page.style.transform = '';
                 page.style.zIndex = 100 - index;
-            });
-            currentPage = 0;
 
-            // Preload first 5 pages immediately for fast startup
-            for (let i = 0; i < Math.min(5, pages.length); i++) {
-                const page = pages[i];
-                if (page) {
-                    page.querySelectorAll('img[src]').forEach(img => {
+                // Set loading attribute based on page position
+                page.querySelectorAll('img[src]').forEach(img => {
+                    if (index < 5) {
+                        // First 5 pages: eager load
                         img.loading = 'eager';
+                        img.decoding = 'sync';
+                        // Force load immediately
                         if (!img.complete) {
                             const preload = new Image();
                             preload.src = img.src;
                         }
-                    });
-                }
-            }
+                    } else {
+                        // Remaining pages: lazy load
+                        img.loading = 'lazy';
+                        img.decoding = 'async';
+                    }
+                });
+            });
+            currentPage = 0;
         })();
 
         // Drag state
@@ -1696,6 +1700,9 @@
                 const nextPage = document.getElementById(`page-${fromPage + i}`);
                 if (nextPage) {
                     nextPage.querySelectorAll('img[src]').forEach(img => {
+                        // Switch from lazy to eager for upcoming pages
+                        img.loading = 'eager';
+                        img.decoding = 'sync';
                         if (!img.complete) {
                             const preload = new Image();
                             preload.src = img.src;
