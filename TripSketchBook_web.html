@@ -4176,16 +4176,44 @@
         }
 
         // Go to specific page
+        let isJumping = false;
         function goToPage(targetPage) {
-            if (targetPage === currentPage || targetPage < 0 || targetPage >= totalPages) return;
-            const dir = targetPage > currentPage ? 1 : -1;
-            // Turn pages one by one for smooth animation
-            const turnNext = () => {
-                if (currentPage === targetPage) return;
-                turnPage(dir);
-                setTimeout(turnNext, 150);
-            };
-            turnNext();
+            if (isJumping || targetPage === currentPage || targetPage < 0 || targetPage >= totalPages) return;
+            isJumping = true;
+
+            // For nearby pages, flip one by one
+            const distance = Math.abs(targetPage - currentPage);
+            if (distance <= 3) {
+                const dir = targetPage > currentPage ? 1 : -1;
+                const turnNext = () => {
+                    if (currentPage === targetPage) {
+                        isJumping = false;
+                        return;
+                    }
+                    turnPage(dir);
+                    setTimeout(turnNext, 400); // Wait for transition
+                };
+                turnNext();
+            } else {
+                // For far jumps, instant transition
+                pages.forEach((page, i) => {
+                    page.style.transition = 'none';
+                    if (i < targetPage) {
+                        page.classList.add('flipped');
+                    } else {
+                        page.classList.remove('flipped');
+                    }
+                });
+                currentPage = targetPage;
+                // Force reflow then restore transitions
+                void document.body.offsetHeight;
+                pages.forEach(page => page.style.transition = '');
+                updateZIndex();
+                updateProgressDots();
+                updateThumbnails();
+                updatePageIndicator();
+                isJumping = false;
+            }
         }
 
         // Update page indicator
