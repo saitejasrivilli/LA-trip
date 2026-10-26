@@ -1716,13 +1716,36 @@
 
         function runPageEffect(fx, dir, page, flipped, to) {
             page.style.transition = 'none';
-            page.classList.toggle('flipped', flipped);
-            currentPage = to;
-            updateZIndex();
+            // Force both sides visible during animation
+            const front = page.querySelector('.page-content.front');
+            const back = page.querySelector('.page-content.back');
+            if (front) front.style.visibility = 'visible';
+            if (back) back.style.visibility = 'visible';
+
             getComputedStyle(page).transform;
             page.classList.add('flipping');
             const anim = page.animate(fx.frames, { duration: fx.duration, easing: fx.easing, direction: dir > 0 ? 'normal' : 'reverse' });
-            const done = () => { page.style.transition = ''; page.classList.remove('flipping'); if (activeTurn === turn) activeTurn = null; };
+
+            // Toggle flipped class at midpoint (when page is perpendicular)
+            const midpointMs = fx.duration * 0.5;
+            const classTimeout = setTimeout(() => {
+                page.classList.toggle('flipped', flipped);
+                currentPage = to;
+                updateZIndex();
+            }, midpointMs);
+
+            const done = () => {
+                clearTimeout(classTimeout);
+                page.classList.toggle('flipped', flipped);
+                currentPage = to;
+                updateZIndex();
+                // Restore CSS-controlled visibility
+                if (front) front.style.visibility = '';
+                if (back) back.style.visibility = '';
+                page.style.transition = '';
+                page.classList.remove('flipping');
+                if (activeTurn === turn) activeTurn = null;
+            };
             const turn = { finish() { anim.cancel(); done(); } };
             anim.onfinish = done;
             return turn;
