@@ -853,334 +853,6 @@
             .photo-grid.triple .polaroid img { max-height: 22vh; }
             .photo-grid.quad .polaroid img { max-height: 20vh; }
         }
-
-        /* === UI ENHANCEMENTS === */
-
-        /* 1. Page curl shadow - follows turning edge */
-        .page.flipping::before {
-            content: '';
-            position: absolute;
-            top: 0; right: -30px; width: 60px; height: 100%;
-            background: linear-gradient(to left,
-                rgba(0,0,0,0) 0%,
-                rgba(0,0,0,0.2) 40%,
-                rgba(0,0,0,0.4) 100%);
-            transform-origin: left center;
-            pointer-events: none;
-            z-index: 999;
-        }
-
-        /* 3. Page indicator */
-        .page-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-family: 'Caveat', cursive;
-            font-size: 1.1rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-            pointer-events: none;
-        }
-        .page-indicator.visible { opacity: 1; }
-
-        /* 4. Loading skeleton shimmer */
-        .img-skeleton {
-            background: linear-gradient(90deg, #e8e0d0 25%, #f5f0e6 50%, #e8e0d0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 4px;
-        }
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* 5. Thumbnail strip */
-        .thumbnail-strip {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 20px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            z-index: 1001;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .thumbnail-strip.visible { transform: translateY(0); }
-        .thumbnail-strip::-webkit-scrollbar { height: 4px; }
-        .thumbnail-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px; }
-        .thumb-item {
-            min-width: 50px;
-            height: 50px;
-            border-radius: 4px;
-            background: #333;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-            overflow: hidden;
-        }
-        .thumb-item:hover { opacity: 1; transform: scale(1.1); }
-        .thumb-item.active { opacity: 1; border-color: #ffd93d; }
-        .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
-        .thumb-toggle {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Caveat', cursive;
-            font-size: 1rem;
-            z-index: 1002;
-            transition: bottom 0.3s ease, opacity 0.3s ease;
-        }
-        .thumb-toggle:hover { background: rgba(0,0,0,0.8); }
-        .thumbnail-strip.visible + .thumb-toggle { bottom: 80px; }
-
-        /* 7. Progress dots */
-        .progress-dots {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 1000;
-        }
-        .progress-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .progress-dot:hover { background: rgba(255,255,255,0.6); transform: scale(1.3); }
-        .progress-dot.active { background: #ffd93d; transform: scale(1.2); }
-        @media (max-width: 768px) {
-            .progress-dots { right: 10px; gap: 6px; }
-            .progress-dot { width: 8px; height: 8px; }
-        }
-
-        /* 8. Photo lightbox */
-        .lightbox {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            cursor: zoom-out;
-        }
-        .lightbox.active { opacity: 1; visibility: visible; }
-        .lightbox img {
-            max-width: 95vw;
-            max-height: 95vh;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-        .lightbox.active img { transform: scale(1); }
-        .lightbox-close {
-            position: absolute;
-            top: 20px; right: 20px;
-            background: rgba(255,255,255,0.2);
-            color: #fff;
-            border: none;
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            font-size: 24px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-        .lightbox-close:hover { background: rgba(255,255,255,0.4); }
-        .lightbox-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.2);
-            color: #fff;
-            border: none;
-            width: 50px; height: 80px;
-            font-size: 28px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-        .lightbox-nav:hover { background: rgba(255,255,255,0.4); }
-        .lightbox-nav.prev { left: 20px; border-radius: 8px; }
-        .lightbox-nav.next { right: 20px; border-radius: 8px; }
-
-        /* 9. Sound toggle */
-        .sound-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            border: none;
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 1000;
-            transition: all 0.2s ease;
-        }
-        .sound-toggle:hover { background: rgba(0,0,0,0.8); transform: scale(1.1); }
-        .sound-toggle.muted { opacity: 0.5; }
-
-        /* 10. Keyboard hints */
-        .keyboard-hint {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 14px;
-            z-index: 1003;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .keyboard-hint.visible { opacity: 1; }
-        .keyboard-hint kbd {
-            background: rgba(255,255,255,0.2);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-family: inherit;
-            margin: 0 4px;
-        }
-
-        /* 12. Orientation hint (mobile) */
-        .orientation-hint {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 12, 41, 0.95);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            color: #fff;
-            font-family: 'Caveat', cursive;
-            font-size: 1.5rem;
-            z-index: 3000;
-            text-align: center;
-            padding: 20px;
-        }
-        .orientation-hint svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-            animation: rotate-phone 2s ease-in-out infinite;
-        }
-        @keyframes rotate-phone {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(90deg); }
-        }
-        .orientation-hint .dismiss {
-            margin-top: 30px;
-            padding: 10px 30px;
-            background: #ffd93d;
-            color: #000;
-            border: none;
-            border-radius: 25px;
-            font-family: 'Caveat', cursive;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        @media (max-width: 768px) and (orientation: portrait) {
-            .orientation-hint.active { display: flex; }
-        }
-
-        /* 13. Dynamic page shadow between pages */
-        .book::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 100%;
-            background: linear-gradient(to right,
-                rgba(0,0,0,0.15) 0%,
-                rgba(0,0,0,0.05) 40%,
-                rgba(0,0,0,0.05) 60%,
-                rgba(0,0,0,0.15) 100%);
-            pointer-events: none;
-            z-index: 500;
-        }
-
-        /* 14. Book spine effect on cover */
-        .page-content.cover::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 20px;
-            height: 100%;
-            background: linear-gradient(to right,
-                rgba(0,0,0,0.3) 0%,
-                rgba(0,0,0,0.1) 50%,
-                rgba(0,0,0,0) 100%);
-            pointer-events: none;
-        }
-
-        /* Hide UI elements during flip for performance */
-        .book.turning .progress-dots,
-        .book.turning .page-indicator { opacity: 0; }
-
-        /* Swipe hint animation */
-        .swipe-hint {
-            position: fixed;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.6);
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .swipe-hint.visible { opacity: 1; }
-        .swipe-hint svg { animation: swipe-anim 2s ease-in-out infinite; }
-        @keyframes swipe-anim {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-15px); }
-        }
     </style>
 <script src="https://unpkg.com/heic2any@0.0.3/dist/heic2any.min.js"></script>
 <!-- Preload first page images for instant display -->
@@ -1194,7 +866,7 @@
 <div class="book-container">
 <div class="book" id="book">
 <!-- Page 0: Cover -->
-<div class="page right" id="page-0" style="">
+<div class="page right" id="page-0" style="z-index: 0; pointer-events: none;">
 <div class="page-content front cover" style="display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;padding:8px;">
 <img alt="LA Skyline" decoding="async"  src="photos/photo-01.jpg" style="width:94%;height:31%;object-fit:cover;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.4);">
 <div style="position:relative;width:94%;height:31%;display:flex;align-items:center;justify-content:center;">
@@ -1221,7 +893,7 @@
 </div>
 </div>
 <!-- Page 1: Title / Day 1 Start -->
-<div class="page right" id="page-1" style="">
+<div class="page right" id="page-1" style="z-index: 1; pointer-events: none;">
 <div class="page-content front title-page">
 <h1>LA Adventure</h1>
 <div class="dates">October 17-20, 2026</div>
@@ -1249,7 +921,7 @@
 </div>
 </div>
 <!-- Page 2: Day 1 More / Day 1 Illustration -->
-<div class="page right" id="page-2" style="">
+<div class="page right" id="page-2" style="z-index: 2; pointer-events: none;">
                 <div class="page-content front left-page">
                     <div class="day-header" contenteditable="true" spellcheck="false">New Page</div>
                     <div class="day-date" contenteditable="true" spellcheck="false">Click to edit date</div>
@@ -1266,7 +938,7 @@
                     <div class="polaroid" tabindex="0" aria-pressed="false" draggable="true" style="cursor: pointer; width: 657px; left: 5px; top: 13px;"><div class="washi-tape washi-tape-6"></div><img src="extracted_photos/photo_004.jpg" alt="New photo" style="width: 645px !important; height: 645px !important; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; display: block;" title="Click: select | Double-click: replace | Right-click: menu"><button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div></div>
                     <div class="page-corner left" onclick="prevPage()"></div>
                 </div>
-            </div><div class="page right" id="page-3" style="">
+            </div><div class="page right" id="page-3" style="z-index: 3; pointer-events: none;">
 <div class="page-content front left-page">
 <div class="day-header" contenteditable="true" spellcheck="false">Day 1</div>
 <div class="day-date" contenteditable="true" spellcheck="false">October 17, 2026</div>
@@ -1295,7 +967,7 @@
 </div>
 </div>
 <!-- Page 3: Day 2 Start -->
-<div class="page right" id="page-4" style="">
+<div class="page right" id="page-4" style="z-index: 4; pointer-events: none;">
 <div class="page-content front left-page">
 <div class="day-header" contenteditable="true" spellcheck="false">Day 2</div>
 <div class="day-date" contenteditable="true" spellcheck="false">October 18, 2026</div>
@@ -1316,7 +988,7 @@
 </div>
 </div>
 <!-- Page 4: Day 2 More / Castle Illustration -->
-<div class="page right" id="page-5" style="">
+<div class="page right" id="page-5" style="z-index: 5; pointer-events: none;">
                 <div class="page-content front left-page">
                     <div class="day-header" contenteditable="true" spellcheck="false">New Page</div>
                     <div class="day-date" contenteditable="true" spellcheck="false">Click to edit date</div>
@@ -1333,7 +1005,7 @@
                     <div class="polaroid" tabindex="0" aria-pressed="false" draggable="true" style="cursor: pointer; width: 324px; left: 6px; top: 179px;"><div class="washi-tape washi-tape-7"></div><img src="extracted_photos/photo_013.png" alt="New photo" style="width: 312px !important; height: 312px !important; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; display: block;" title="Click: select | Double-click: replace | Right-click: menu"><button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div><div class="polaroid" tabindex="0" aria-pressed="false" draggable="true" style="cursor: pointer; width: 324px; left: 338px; top: 179px;"><div class="washi-tape washi-tape-1"></div><img src="extracted_photos/photo_014.png" alt="New photo" style="width: 312px !important; height: 312px !important; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; display: block;" title="Click: select | Double-click: replace | Right-click: menu"><button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div></div>
                     <div class="page-corner left" onclick="prevPage()"></div>
                 </div>
-            </div><div class="page right" id="page-6" style="">
+            </div><div class="page right" id="page-6" style="z-index: 6; pointer-events: none;">
 <div class="page-content front left-page">
 <div class="day-header" contenteditable="true" spellcheck="false">Day 2</div>
 <div class="day-date" contenteditable="true" spellcheck="false">October 18, 2026</div>
@@ -1353,7 +1025,7 @@
 </div>
 </div>
 <!-- Page 5: Day 3 Start -->
-<div class="page right" id="page-7" style="">
+<div class="page right" id="page-7" style="z-index: 50; pointer-events: auto;">
                 <div class="page-content front left-page">
                     <div class="day-header" contenteditable="true" spellcheck="false">New Page</div>
                     <div class="day-date" contenteditable="true" spellcheck="false">Click to edit date</div>
@@ -1370,7 +1042,7 @@
                     <div class="polaroid" tabindex="0" aria-pressed="false" draggable="true" style="cursor: pointer; width: 324px; left: 172px; top: 5px;"><div class="washi-tape washi-tape-1"></div><img src="extracted_photos/photo_020.png" alt="New photo" style="width: 312px !important; height: 312px !important; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; display: block;" title="Click: select | Double-click: replace | Right-click: menu"><button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div><div class="polaroid" tabindex="0" aria-pressed="false" draggable="true" style="cursor: pointer; width: 428px; left: 120px; top: 353px;"><div class="washi-tape washi-tape-7"></div><img src="extracted_photos/photo_021.png" alt="New photo" style="width: 416px !important; height: 312px !important; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; display: block;" title="Click: select | Double-click: replace | Right-click: menu"><button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div></div>
                     <div class="page-corner left" onclick="prevPage()"></div>
                 </div>
-            </div><div class="page right" id="page-8" style="">
+            </div><div class="page right" id="page-8" style="z-index: 108; pointer-events: auto;">
 <div class="page-content front left-page">
 <div class="day-header" contenteditable="true" spellcheck="false">Day 3</div>
 <div class="day-date" contenteditable="true" spellcheck="false">October 19, 2026</div>
@@ -1392,7 +1064,7 @@
 </div>
 </div>
 <!-- Page 6: Day 3 Night -->
-<div class="page right" id="page-9" style="">
+<div class="page right" id="page-9" style="z-index: 107; pointer-events: none;">
 <div class="page-content front left-page day-continued">
 <div class="day-header" contenteditable="true" spellcheck="false">Day 3</div>
 <div class="day-date" contenteditable="true" spellcheck="false">October 19, 2026 - Night</div>
@@ -1411,7 +1083,7 @@
 </div>
 </div>
 <!-- Page 7: Day 4 Start -->
-<div class="page right" id="page-10" style="">
+<div class="page right" id="page-10" style="z-index: 106; pointer-events: none;">
 <div class="page-content front left-page">
 <div class="day-header" contenteditable="true" spellcheck="false">Day 4</div>
 <div class="day-date" contenteditable="true" spellcheck="false">October 20, 2026</div>
@@ -1434,7 +1106,7 @@
 </div>
 </div>
 <!-- Page 8: Day 4 HHN / Illustration -->
-<div class="page right" id="page-11" style="">
+<div class="page right" id="page-11" style="z-index: 105; pointer-events: none;">
 <div class="page-content front left-page day-continued">
 <div class="day-header" contenteditable="true" spellcheck="false">Day 4</div>
 <div class="day-date" contenteditable="true" spellcheck="false">October 20, 2026 - Night</div>
@@ -1456,7 +1128,7 @@
 </div>
 </div>
 <!-- Page 9: Santa Monica -->
-<div class="page right" id="page-12" style="">
+<div class="page right" id="page-12" style="z-index: 104; pointer-events: none;">
                 <div class="page-content front left-page">
                     <div class="day-header" contenteditable="true" spellcheck="false">New Page</div>
                     <div class="day-date" contenteditable="true" spellcheck="false">Click to edit date</div>
@@ -1473,7 +1145,7 @@
                     <div class="polaroid" tabindex="0" aria-pressed="false" draggable="true" style="cursor: pointer; width: 657px; left: 5px; top: 13px;"><div class="washi-tape washi-tape-8"></div><img src="extracted_photos/photo_038.png" alt="New photo" style="width: 645px !important; height: 645px !important; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; display: block;" title="Click: select | Double-click: replace | Right-click: menu"><button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div></div>
                     <div class="page-corner left" onclick="prevPage()"></div>
                 </div>
-            </div><div class="page right" id="page-13" style="">
+            </div><div class="page right" id="page-13" style="z-index: 103; pointer-events: none;">
 <div class="page-content front left-page">
 <div class="day-header" contenteditable="true" spellcheck="false">Day 4</div>
 <div class="day-date" contenteditable="true" spellcheck="false">October 20, 2026 - Sunset - Hollywood</div>
@@ -1536,7 +1208,7 @@
 </div>
 </div>
 <!-- Page 10: Closing -->
-<div class="page right" id="page-14" style="">
+<div class="page right" id="page-14" style="z-index: 102; pointer-events: none;">
                 <div class="page-content front left-page">
                     <div class="day-header" contenteditable="true" spellcheck="false">Universal Studios Exit</div>
                     <div class="day-date" contenteditable="true" spellcheck="false">Day 4</div>
@@ -1553,7 +1225,7 @@
                     <div class="polaroid" tabindex="0" aria-pressed="false" draggable="true" style="cursor: pointer; width: 657px; left: 5px; top: 213px;"><div class="washi-tape washi-tape-8"></div><img src="extracted_photos/photo_044.png" alt="New photo" style="width: 645px !important; height: 215px !important; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; display: block;" title="Click: select | Double-click: replace | Right-click: menu"><button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div></div>
                     <div class="page-corner left" onclick="prevPage()"></div>
                 </div>
-            </div><div class="page right" id="page-15" style="">
+            </div><div class="page right" id="page-15" style="z-index: 101; pointer-events: none;">
 <div class="page-content front closing-page">
 <h2>The End</h2>
 <p>Until the next adventure...</p>
@@ -1899,18 +1571,10 @@
 
         // RESET: Always start from page 0 on load
         (function resetToFirstPage() {
-            const numPages = pages.length;
             pages.forEach((page, index) => {
                 page.classList.remove('flipped', 'flipping', 'dragging');
                 page.style.transform = '';
-                // Page 0 should be on top (highest z-index), rest below
-                if (index === 0) {
-                    page.style.zIndex = numPages + 100;
-                    page.style.pointerEvents = 'auto';
-                } else {
-                    page.style.zIndex = numPages - index + 100;
-                    page.style.pointerEvents = 'none';
-                }
+                page.style.zIndex = 100 - index;
 
                 // Set loading attribute based on page position
                 page.querySelectorAll('img[src]').forEach(img => {
@@ -4040,441 +3704,5 @@
             // Re-add controls after save
             if (controlsWrapper) document.body.appendChild(controlsWrapper);
         }
-
-        // === UI ENHANCEMENTS ===
-
-        // Create UI elements
-        (function createUIElements() {
-            // Page indicator
-            const pageIndicator = document.createElement('div');
-            pageIndicator.className = 'page-indicator';
-            pageIndicator.id = 'page-indicator';
-            document.body.appendChild(pageIndicator);
-
-            // Progress dots
-            const progressDots = document.createElement('div');
-            progressDots.className = 'progress-dots';
-            progressDots.id = 'progress-dots';
-            document.body.appendChild(progressDots);
-
-            // Thumbnail strip
-            const thumbStrip = document.createElement('div');
-            thumbStrip.className = 'thumbnail-strip';
-            thumbStrip.id = 'thumbnail-strip';
-            document.body.appendChild(thumbStrip);
-
-            // Lightbox
-            const lightbox = document.createElement('div');
-            lightbox.className = 'lightbox';
-            lightbox.id = 'lightbox';
-            lightbox.innerHTML = `
-                <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-                <button class="lightbox-nav prev" onclick="lightboxNav(-1)">&#8249;</button>
-                <img src="" alt="Full size photo">
-                <button class="lightbox-nav next" onclick="lightboxNav(1)">&#8250;</button>
-            `;
-            document.body.appendChild(lightbox);
-
-            // Sound toggle
-            const soundToggle = document.createElement('button');
-            soundToggle.className = 'sound-toggle muted';
-            soundToggle.id = 'sound-toggle';
-            soundToggle.innerHTML = '🔇';
-            soundToggle.title = 'Toggle page flip sound';
-            soundToggle.onclick = toggleSound;
-            document.body.appendChild(soundToggle);
-
-            // Keyboard hints (desktop only)
-            if (!('ontouchstart' in window)) {
-                const keyHint = document.createElement('div');
-                keyHint.className = 'keyboard-hint';
-                keyHint.id = 'keyboard-hint';
-                keyHint.innerHTML = `
-                    <span><kbd>←</kbd><kbd>→</kbd> Navigate</span>
-                    <span><kbd>Space</kbd> Next page</span>
-                    <span>Click photo to zoom</span>
-                `;
-                document.body.appendChild(keyHint);
-            }
-
-            // Swipe hint (mobile only)
-            if ('ontouchstart' in window) {
-                const swipeHint = document.createElement('div');
-                swipeHint.className = 'swipe-hint';
-                swipeHint.id = 'swipe-hint';
-                swipeHint.innerHTML = `
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l-7 7 7 7"/>
-                    </svg>
-                    <span>Swipe to turn pages</span>
-                `;
-                document.body.appendChild(swipeHint);
-            }
-
-            // Orientation hint (mobile only)
-            if ('ontouchstart' in window) {
-                const orientHint = document.createElement('div');
-                orientHint.className = 'orientation-hint';
-                orientHint.id = 'orientation-hint';
-                orientHint.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="5" y="2" width="14" height="20" rx="2"/>
-                        <circle cx="12" cy="18" r="1"/>
-                    </svg>
-                    <p>Rotate your device for<br>the best viewing experience</p>
-                    <button class="dismiss" onclick="dismissOrientationHint()">Got it!</button>
-                `;
-                document.body.appendChild(orientHint);
-            }
-        })();
-
-        // Initialize progress dots
-        function initProgressDots() {
-            const container = document.getElementById('progress-dots');
-            if (!container) return;
-            container.innerHTML = '';
-            for (let i = 0; i < totalPages; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'progress-dot' + (i === currentPage ? ' active' : '');
-                dot.onclick = () => goToPage(i);
-                dot.title = `Page ${i + 1}`;
-                container.appendChild(dot);
-            }
-        }
-
-        // Update progress dots
-        function updateProgressDots() {
-            document.querySelectorAll('.progress-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentPage);
-            });
-        }
-
-        // Initialize thumbnails
-        function initThumbnails() {
-            const container = document.getElementById('thumbnail-strip');
-            if (!container) return;
-            container.innerHTML = '';
-            pages.forEach((page, i) => {
-                const thumb = document.createElement('div');
-                thumb.className = 'thumb-item' + (i === currentPage ? ' active' : '');
-                thumb.onclick = () => goToPage(i);
-                // Get first image from page
-                const img = page.querySelector('img');
-                if (img) {
-                    const thumbImg = document.createElement('img');
-                    thumbImg.src = img.src;
-                    thumbImg.alt = `Page ${i + 1}`;
-                    thumb.appendChild(thumbImg);
-                } else {
-                    thumb.textContent = i + 1;
-                    thumb.style.display = 'flex';
-                    thumb.style.alignItems = 'center';
-                    thumb.style.justifyContent = 'center';
-                    thumb.style.color = '#fff';
-                }
-                container.appendChild(thumb);
-            });
-        }
-
-        // Update thumbnails
-        function updateThumbnails() {
-            document.querySelectorAll('.thumb-item').forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === currentPage);
-            });
-        }
-
-        // Go to specific page
-        let isJumping = false;
-        function goToPage(targetPage) {
-            if (isJumping || targetPage === currentPage || targetPage < 0 || targetPage >= totalPages) return;
-            isJumping = true;
-
-            // For nearby pages, flip one by one
-            const distance = Math.abs(targetPage - currentPage);
-            if (distance <= 3) {
-                const dir = targetPage > currentPage ? 1 : -1;
-                const turnNext = () => {
-                    if (currentPage === targetPage) {
-                        isJumping = false;
-                        return;
-                    }
-                    turnPage(dir);
-                    setTimeout(turnNext, 400); // Wait for transition
-                };
-                turnNext();
-            } else {
-                // For far jumps, instant transition
-                pages.forEach((page, i) => {
-                    page.style.transition = 'none';
-                    if (i < targetPage) {
-                        page.classList.add('flipped');
-                    } else {
-                        page.classList.remove('flipped');
-                    }
-                });
-                currentPage = targetPage;
-                // Force reflow then restore transitions
-                void document.body.offsetHeight;
-                pages.forEach(page => page.style.transition = '');
-                updateZIndex();
-                updateProgressDots();
-                updateThumbnails();
-                updatePageIndicator();
-                isJumping = false;
-            }
-        }
-
-        // Update page indicator
-        function updatePageIndicator() {
-            const indicator = document.getElementById('page-indicator');
-            if (!indicator) return;
-            indicator.textContent = `${currentPage + 1} of ${totalPages}`;
-            indicator.classList.add('visible');
-            clearTimeout(indicator._hideTimeout);
-            indicator._hideTimeout = setTimeout(() => {
-                indicator.classList.remove('visible');
-            }, 2000);
-        }
-
-        // Lightbox functionality
-        let lightboxImages = [];
-        let lightboxIndex = 0;
-
-        function openLightbox(imgSrc) {
-            // Collect all images on current spread
-            lightboxImages = [];
-            const visiblePages = [currentPage - 1, currentPage].filter(i => i >= 0 && i < totalPages);
-            visiblePages.forEach(i => {
-                const page = document.getElementById(`page-${i}`);
-                if (page) {
-                    page.querySelectorAll('.polaroid img, .photo-grid img').forEach(img => {
-                        if (img.src) lightboxImages.push(img.src);
-                    });
-                }
-            });
-            lightboxIndex = lightboxImages.indexOf(imgSrc);
-            if (lightboxIndex === -1) {
-                lightboxImages = [imgSrc];
-                lightboxIndex = 0;
-            }
-            const lightbox = document.getElementById('lightbox');
-            lightbox.querySelector('img').src = imgSrc;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function lightboxNav(dir) {
-            lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
-            document.querySelector('#lightbox img').src = lightboxImages[lightboxIndex];
-        }
-
-        // Close lightbox on click outside image
-        document.getElementById('lightbox')?.addEventListener('click', (e) => {
-            if (e.target.classList.contains('lightbox')) closeLightbox();
-        });
-
-        // Keyboard nav for lightbox
-        document.addEventListener('keydown', (e) => {
-            const lightbox = document.getElementById('lightbox');
-            if (!lightbox?.classList.contains('active')) return;
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowLeft') lightboxNav(-1);
-            if (e.key === 'ArrowRight') lightboxNav(1);
-        });
-
-        // Make photos clickable for lightbox
-        function setupLightboxTriggers() {
-            document.querySelectorAll('.polaroid img, .photo-grid > img').forEach(img => {
-                img.style.cursor = 'zoom-in';
-                img.addEventListener('dblclick', (e) => {
-                    e.stopPropagation();
-                    openLightbox(img.src);
-                });
-            });
-        }
-        setupLightboxTriggers();
-        window.openLightbox = openLightbox;
-        window.closeLightbox = closeLightbox;
-        window.lightboxNav = lightboxNav;
-
-        // Sound functionality
-        let soundEnabled = false;
-        const pageFlipSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYNBqr2AAAAAAAAAAAAAAAAAAAAAP/7kGQAAANUAEpVAAAAA0gASlUAAAE0INZdngAABjAgz6mAAAAY1B3UmNQd1BjUGNQY1BjUGNQY1BjUGNQY1BjUGNQY1BjUGNQY1BjUHdQd//uQZAAAA');
-
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            const btn = document.getElementById('sound-toggle');
-            btn.innerHTML = soundEnabled ? '🔊' : '🔇';
-            btn.classList.toggle('muted', !soundEnabled);
-            if (soundEnabled) {
-                pageFlipSound.volume = 0.3;
-                pageFlipSound.play().catch(() => {});
-            }
-        }
-
-        function playPageSound() {
-            if (soundEnabled) {
-                pageFlipSound.currentTime = 0;
-                pageFlipSound.play().catch(() => {});
-            }
-        }
-        window.toggleSound = toggleSound;
-
-        // Swipe gestures for mobile
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchStartTime = 0;
-
-        document.addEventListener('touchstart', (e) => {
-            if (e.target.closest('.lightbox, .thumbnail-strip, .toolbar')) return;
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-            touchStartTime = Date.now();
-        }, { passive: true });
-
-        document.addEventListener('touchend', (e) => {
-            if (e.target.closest('.lightbox, .thumbnail-strip, .toolbar')) return;
-            const touchEndX = e.changedTouches[0].clientX;
-            const touchEndY = e.changedTouches[0].clientY;
-            const deltaX = touchEndX - touchStartX;
-            const deltaY = touchEndY - touchStartY;
-            const deltaTime = Date.now() - touchStartTime;
-
-            // Minimum swipe: 50px horizontal, less than 100px vertical, within 500ms
-            if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 100 && deltaTime < 500) {
-                if (deltaX < 0) {
-                    nextPage();
-                    playPageSound();
-                } else {
-                    prevPage();
-                    playPageSound();
-                }
-            }
-        }, { passive: true });
-
-        // Orientation hint
-        function checkOrientation() {
-            const hint = document.getElementById('orientation-hint');
-            if (!hint) return;
-            const isPortrait = window.innerHeight > window.innerWidth;
-            const dismissed = localStorage.getItem('orientationHintDismissed');
-            if (isPortrait && !dismissed && 'ontouchstart' in window) {
-                hint.classList.add('active');
-            } else {
-                hint.classList.remove('active');
-            }
-        }
-
-        function dismissOrientationHint() {
-            localStorage.setItem('orientationHintDismissed', 'true');
-            document.getElementById('orientation-hint')?.classList.remove('active');
-        }
-        window.dismissOrientationHint = dismissOrientationHint;
-
-        window.addEventListener('resize', checkOrientation);
-        window.addEventListener('orientationchange', checkOrientation);
-
-        // Show hints on first visit
-        function showInitialHints() {
-            const shown = localStorage.getItem('sketchbookHintsShown');
-            if (shown) return;
-
-            // Show keyboard hint (desktop) or swipe hint (mobile)
-            setTimeout(() => {
-                const hint = document.getElementById('keyboard-hint') || document.getElementById('swipe-hint');
-                if (hint) {
-                    hint.classList.add('visible');
-                    setTimeout(() => hint.classList.remove('visible'), 5000);
-                }
-                localStorage.setItem('sketchbookHintsShown', 'true');
-            }, 2000);
-
-            // Check orientation on mobile
-            checkOrientation();
-        }
-
-        // Hook into page turn to update UI
-        const originalSetTurnState = setTurnState;
-        setTurnState = function(page, flipped, to) {
-            originalSetTurnState(page, flipped, to);
-            updateProgressDots();
-            updateThumbnails();
-            updatePageIndicator();
-            playPageSound();
-        };
-
-        // Initialize everything
-        setTimeout(() => {
-            initProgressDots();
-            initThumbnails();
-            updatePageIndicator();
-            showInitialHints();
-        }, 500);
-
-        // Pinch to zoom on images (basic implementation)
-        let initialPinchDistance = 0;
-        let currentScale = 1;
-
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 2) {
-                const img = e.target.closest('.polaroid img');
-                if (img) {
-                    e.preventDefault();
-                    initialPinchDistance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                    currentScale = 1;
-                    img.style.transition = 'none';
-                }
-            }
-        }, { passive: false });
-
-        document.addEventListener('touchmove', (e) => {
-            if (e.touches.length === 2 && initialPinchDistance > 0) {
-                const img = e.target.closest('.polaroid img');
-                if (img) {
-                    const currentDistance = Math.hypot(
-                        e.touches[0].clientX - e.touches[1].clientX,
-                        e.touches[0].clientY - e.touches[1].clientY
-                    );
-                    currentScale = Math.min(3, Math.max(1, currentDistance / initialPinchDistance));
-                    img.style.transform = `scale(${currentScale})`;
-                }
-            }
-        }, { passive: true });
-
-        document.addEventListener('touchend', (e) => {
-            if (initialPinchDistance > 0) {
-                const img = document.querySelector('.polaroid img[style*="scale"]');
-                if (img) {
-                    img.style.transition = 'transform 0.3s ease';
-                    img.style.transform = '';
-                }
-                initialPinchDistance = 0;
-                currentScale = 1;
-            }
-        }, { passive: true });
-
-        // Image loading skeleton
-        function addLoadingSkeletons() {
-            document.querySelectorAll('.polaroid img, .photo-grid > img').forEach(img => {
-                if (!img.complete) {
-                    img.classList.add('img-skeleton');
-                    img.addEventListener('load', () => {
-                        img.classList.remove('img-skeleton');
-                    }, { once: true });
-                }
-            });
-        }
-        addLoadingSkeletons();
-
-        console.log('UI enhancements loaded');
     </script>
 </body></html>
