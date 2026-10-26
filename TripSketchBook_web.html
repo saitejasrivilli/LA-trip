@@ -855,6 +855,12 @@
         }
     </style>
 <script src="https://unpkg.com/heic2any@0.0.3/dist/heic2any.min.js"></script>
+<!-- Preload first page images for instant display -->
+<link rel="preload" as="image" href="extracted_photos/photo_001.png" fetchpriority="high">
+<link rel="preload" as="image" href="extracted_photos/photo_002.png" fetchpriority="high">
+<link rel="preload" as="image" href="extracted_photos/photo_003.png">
+<link rel="preload" as="image" href="extracted_photos/photo_004.png">
+<link rel="preload" as="image" href="extracted_photos/photo_005.png">
 </head>
 <body class="anim-smooth" style="">
 <div class="book-container">
@@ -1571,6 +1577,20 @@
                 page.style.zIndex = 100 - index;
             });
             currentPage = 0;
+
+            // Preload first 5 pages immediately for fast startup
+            for (let i = 0; i < Math.min(5, pages.length); i++) {
+                const page = pages[i];
+                if (page) {
+                    page.querySelectorAll('img[src]').forEach(img => {
+                        img.loading = 'eager';
+                        if (!img.complete) {
+                            const preload = new Image();
+                            preload.src = img.src;
+                        }
+                    });
+                }
+            }
         })();
 
         // Drag state
