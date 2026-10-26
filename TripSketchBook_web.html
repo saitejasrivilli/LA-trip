@@ -2124,12 +2124,11 @@
                     return false;
                 }
 
-                if (confirm(`Recover auto-saved changes from ${hours < 1 ? 'recently' : hours + 'h ago'}?`)) {
-                    applyGridStates(saved.grids, false);
-                    setupImageHandlers();
-                    updateStatusIndicator('recovered');
-                    return true;
-                }
+                // Auto-recover without prompting
+                applyGridStates(saved.grids, false);
+                setupImageHandlers();
+                updateStatusIndicator('recovered');
+                return true;
             } catch (e) {
                 console.warn('Recovery failed:', e);
             }
