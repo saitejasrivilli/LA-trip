@@ -1804,17 +1804,8 @@
             const page = document.getElementById(`page-${dir > 0 ? from : to}`);
             if (!page) return;
             const flipped = dir > 0;
-            // Pick effect for this page pair (stored for reverse navigation)
-            const name = effectFor(from, to);
-            // Run appropriate effect type
-            if (PAGE_EFFECTS[name]) {
-                activeTurn = runPageEffect(PAGE_EFFECTS[name], dir, page, flipped, to);
-            } else if (BOOK_EFFECTS[name]) {
-                activeTurn = runBookEffect(BOOK_EFFECTS[name], dir, page, flipped, to);
-            } else {
-                // Fallback to CSS transition
-                setTurnState(page, flipped, to);
-            }
+            // Pure CSS transition - backface-visibility:hidden handles overlap natively
+            setTurnState(page, flipped, to);
             // Preload upcoming pages
             preloadNextPages(to);
         }
