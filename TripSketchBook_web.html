@@ -3486,7 +3486,8 @@
             document.body.classList.toggle('toolbar-collapsed', collapsed);
             try { localStorage.setItem('sketchbook_toolbar_collapsed', collapsed ? '1' : '0'); } catch (_) {}
         }
-        try { if (localStorage.getItem('sketchbook_toolbar_collapsed') === '1') document.body.classList.add('toolbar-collapsed'); } catch (_) {}
+        // Toolbar hidden by default for viewers
+        document.body.classList.add('toolbar-collapsed');
         // Start with nothing selected (an older save stored a selection in the file)
         document.querySelectorAll('.polaroid.selected, .illustration.selected').forEach(p => {
             p.classList.remove('selected');
