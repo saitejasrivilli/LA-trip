@@ -117,9 +117,9 @@
         }
         .page-content > * { position: relative; z-index: 2; }
         .page.flipped { transform: rotateY(-180deg); }
-        /* Disable pointer-events on the hidden side of each page */
-        .page:not(.flipped) .page-content.back { pointer-events: none; }
-        .page.flipped .page-content.front { pointer-events: none; }
+        /* Hide the back side of pages completely when not visible */
+        .page:not(.flipped) .page-content.back { pointer-events: none; visibility: hidden; }
+        .page.flipped .page-content.front { pointer-events: none; visibility: hidden; }
         /* The side of the open book that new photos will go to */
         .page-content.active-side { outline: 2px dashed rgba(255, 140, 66, 0.7); outline-offset: -6px; }
         body.presentation-mode .page-content.active-side,
@@ -1671,12 +1671,29 @@
         const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         let activeTurn = null;
-        // Change which page is flipped with no CSS transition (the effect does the motion)
+
+        // Preload images for upcoming pages (next 3 pages ahead)
+        function preloadNextPages(fromPage) {
+            for (let i = 1; i <= 3; i++) {
+                const nextPage = document.getElementById(`page-${fromPage + i}`);
+                if (nextPage) {
+                    nextPage.querySelectorAll('img[src]').forEach(img => {
+                        if (!img.complete) {
+                            const preload = new Image();
+                            preload.src = img.src;
+                        }
+                    });
+                }
+            }
+        }
+
+        // Change which page is flipped with CSS transition
         function setTurnState(page, flipped, to) {
-            // Let CSS transitions handle the smooth animation
             page.classList.toggle('flipped', flipped);
             currentPage = to;
             updateZIndex();
+            // Preload images for smooth upcoming transitions
+            preloadNextPages(to);
         }
 
         function runPageEffect(fx, dir, page, flipped, to) {
@@ -1879,8 +1896,9 @@
             }
         }, { passive: true });
 
-        // Initialize z-index
+        // Initialize z-index and preload first pages
         updateZIndex();
+        preloadNextPages(0);
 
         // === IMAGE MANAGEMENT FEATURE ===
         let selectedImage = null;
