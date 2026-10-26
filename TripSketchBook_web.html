@@ -1723,17 +1723,35 @@
 
         function runPageEffect(fx, dir, page, flipped, to) {
             page.style.transition = 'none';
-            // Force both sides visible during animation
             const front = page.querySelector('.page-content.front');
             const back = page.querySelector('.page-content.back');
-            if (front) front.style.visibility = 'visible';
-            if (back) back.style.visibility = 'visible';
+
+            // Force visibility but use opacity to control which side shows
+            if (front) { front.style.visibility = 'visible'; front.style.opacity = dir > 0 ? '1' : '0'; }
+            if (back) { back.style.visibility = 'visible'; back.style.opacity = dir > 0 ? '0' : '1'; }
 
             getComputedStyle(page).transform;
             page.classList.add('flipping');
+
+            // Main page animation
             const anim = page.animate(fx.frames, { duration: fx.duration, easing: fx.easing, direction: dir > 0 ? 'normal' : 'reverse' });
 
-            // Toggle flipped class at midpoint (when page is perpendicular)
+            // Animate opacity on content sides - crossfade at midpoint
+            const fadeOutFrames = [{ opacity: 1 }, { opacity: 1, offset: 0.4 }, { opacity: 0, offset: 0.6 }, { opacity: 0 }];
+            const fadeInFrames = [{ opacity: 0 }, { opacity: 0, offset: 0.4 }, { opacity: 1, offset: 0.6 }, { opacity: 1 }];
+
+            let frontAnim, backAnim;
+            if (dir > 0) {
+                // Going forward: front fades out, back fades in
+                if (front) frontAnim = front.animate(fadeOutFrames, { duration: fx.duration, easing: 'linear' });
+                if (back) backAnim = back.animate(fadeInFrames, { duration: fx.duration, easing: 'linear' });
+            } else {
+                // Going backward: back fades out, front fades in
+                if (back) backAnim = back.animate(fadeOutFrames, { duration: fx.duration, easing: 'linear' });
+                if (front) frontAnim = front.animate(fadeInFrames, { duration: fx.duration, easing: 'linear' });
+            }
+
+            // Toggle flipped class at midpoint
             const midpointMs = fx.duration * 0.5;
             const classTimeout = setTimeout(() => {
                 page.classList.toggle('flipped', flipped);
@@ -1743,12 +1761,14 @@
 
             const done = () => {
                 clearTimeout(classTimeout);
+                if (frontAnim) frontAnim.cancel();
+                if (backAnim) backAnim.cancel();
                 page.classList.toggle('flipped', flipped);
                 currentPage = to;
                 updateZIndex();
-                // Restore CSS-controlled visibility
-                if (front) front.style.visibility = '';
-                if (back) back.style.visibility = '';
+                // Restore CSS-controlled visibility and opacity
+                if (front) { front.style.visibility = ''; front.style.opacity = ''; }
+                if (back) { back.style.visibility = ''; back.style.opacity = ''; }
                 page.style.transition = '';
                 page.classList.remove('flipping');
                 if (activeTurn === turn) activeTurn = null;
