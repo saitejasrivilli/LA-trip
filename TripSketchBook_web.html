@@ -39,30 +39,33 @@
             height: 100%;
             top: 0;
             transform-origin: left center;
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-                        box-shadow 0.4s ease-out;
+            /* Smooth CSS transition - works best across all devices */
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-transform-style: preserve-3d;
             transform-style: preserve-3d;
             cursor: pointer;
+            /* GPU acceleration */
             will-change: transform;
-            /* GPU acceleration for smoother animations */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -webkit-perspective: 1000px;
-            perspective: 1000px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        /* Animation Styles - Enhanced with GPU acceleration */
-        body.anim-bounce .page { transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.4s ease; }
-        body.anim-smooth .page { transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease; }
-        body.anim-snap .page { transition: transform 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53), box-shadow 0.2s ease; }
-        body.anim-elegant .page { transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.6s ease; }
-        /* New animation styles */
-        body.anim-spring .page { transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
-        body.anim-gentle .page { transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.7s ease; }
-        body.anim-swift .page { transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.25s ease; }
-        body.anim-cinematic .page { transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.8s ease; }
+        /* Animation Styles - Pure CSS, hardware accelerated */
+        body.anim-bounce .page { transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        body.anim-smooth .page { transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+        body.anim-snap .page { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        body.anim-elegant .page { transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1); }
+        body.anim-spring .page { transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.1); }
+        body.anim-gentle .page { transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        body.anim-swift .page { transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+        body.anim-cinematic .page { transition: transform 1.4s cubic-bezier(0.25, 0.1, 0.25, 1); }
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .page { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        }
+        @media (hover: none) and (pointer: coarse) {
+            /* Touch devices - faster, simpler animations */
+            .page { transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+        }
         .page.right {
             right: 0;
             left: auto;
@@ -849,7 +852,7 @@
     </style>
 <script src="https://unpkg.com/heic2any@0.0.3/dist/heic2any.min.js"></script>
 </head>
-<body class="anim-bounce" style="">
+<body class="anim-smooth" style="">
 <div class="book-container">
 <div class="book" id="book">
 <!-- Page 0: Cover -->
@@ -1663,12 +1666,10 @@
         let activeTurn = null;
         // Change which page is flipped with no CSS transition (the effect does the motion)
         function setTurnState(page, flipped, to) {
-            page.style.transition = 'none';
+            // Let CSS transitions handle the smooth animation
             page.classList.toggle('flipped', flipped);
             currentPage = to;
             updateZIndex();
-            getComputedStyle(page).transform; // commit the new state before transitions return
-            page.style.transition = '';
         }
 
         function runPageEffect(fx, dir, page, flipped, to) {
@@ -1710,20 +1711,14 @@
         }
 
         function turnPage(dir) {
-            if (activeTurn) activeTurn.finish(); // a fast second click finishes the first turn
+            if (activeTurn) activeTurn.finish();
             const from = currentPage, to = currentPage + dir;
             if (to < 0 || to > totalPages - 1) return;
             const page = document.getElementById(`page-${dir > 0 ? from : to}`);
             if (!page) return;
             const flipped = dir > 0;
-            if (reduceMotion || !page.animate) {
-                setTurnState(page, flipped, to);
-                return;
-            }
-            const name = effectFor(from, to);
-            activeTurn = PAGE_EFFECTS[name]
-                ? runPageEffect(PAGE_EFFECTS[name], dir, page, flipped, to)
-                : runBookEffect(BOOK_EFFECTS[name], dir, page, flipped, to);
+            // Use pure CSS transitions for smooth, consistent animation across all devices
+            setTurnState(page, flipped, to);
         }
 
         function nextPage() {
@@ -3015,21 +3010,21 @@
             <button class="slideshow-auto">Auto: Off</button>
             <button class="slideshow-next">Next ▶</button>
             <select class="style-switcher" title="Page flip style">
-                <option value="anim-bounce">Bounce</option>
                 <option value="anim-smooth">Smooth</option>
-                <option value="anim-snap">Snap</option>
-                <option value="anim-elegant">Elegant</option>
-                <option value="anim-spring">Spring</option>
                 <option value="anim-gentle">Gentle</option>
-                <option value="anim-swift">Swift</option>
+                <option value="anim-elegant">Elegant</option>
                 <option value="anim-cinematic">Cinematic</option>
+                <option value="anim-swift">Swift</option>
+                <option value="anim-snap">Snap</option>
+                <option value="anim-spring">Spring</option>
+                <option value="anim-bounce">Bounce</option>
             </select>
         `;
         document.body.appendChild(slideshowControls);
 
         // Style switcher functionality
         const styleSwitcher = slideshowControls.querySelector('.style-switcher');
-        styleSwitcher.value = 'anim-bounce'; // default
+        styleSwitcher.value = 'anim-smooth'; // default
         styleSwitcher.addEventListener('change', (e) => {
             const allStyles = ['anim-bounce', 'anim-smooth', 'anim-snap', 'anim-elegant', 'anim-spring', 'anim-gentle', 'anim-swift', 'anim-cinematic'];
             allStyles.forEach(s => document.body.classList.remove(s));
