@@ -45,12 +45,24 @@
             transform-style: preserve-3d;
             cursor: pointer;
             will-change: transform;
+            /* GPU acceleration for smoother animations */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-perspective: 1000px;
+            perspective: 1000px;
         }
-        /* Animation Styles */
-        body.anim-bounce .page { transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-        body.anim-smooth .page { transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        body.anim-snap .page { transition: transform 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53); }
-        body.anim-elegant .page { transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        /* Animation Styles - Enhanced with GPU acceleration */
+        body.anim-bounce .page { transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.4s ease; }
+        body.anim-smooth .page { transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease; }
+        body.anim-snap .page { transition: transform 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53), box-shadow 0.2s ease; }
+        body.anim-elegant .page { transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.6s ease; }
+        /* New animation styles */
+        body.anim-spring .page { transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; }
+        body.anim-gentle .page { transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.7s ease; }
+        body.anim-swift .page { transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.25s ease; }
+        body.anim-cinematic .page { transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.8s ease; }
         .page.right {
             right: 0;
             left: auto;
@@ -663,6 +675,19 @@
         }
         .slideshow-controls button:hover { background: rgba(0,0,0,0.9); }
         .slideshow-controls button.active { background: #ff8c42; }
+        .slideshow-controls .style-switcher {
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Caveat', cursive;
+            font-size: 1rem;
+            outline: none;
+        }
+        .slideshow-controls .style-switcher:hover { background: rgba(0,0,0,0.9); border-color: #ff8c42; }
+        .slideshow-controls .style-switcher option { background: #1a1530; color: #fff; }
 
         /* Print styles */
         @media print {
@@ -2986,8 +3011,27 @@
             <button class="slideshow-prev">◀ Prev</button>
             <button class="slideshow-auto">Auto: Off</button>
             <button class="slideshow-next">Next ▶</button>
+            <select class="style-switcher" title="Page flip style">
+                <option value="anim-bounce">Bounce</option>
+                <option value="anim-smooth">Smooth</option>
+                <option value="anim-snap">Snap</option>
+                <option value="anim-elegant">Elegant</option>
+                <option value="anim-spring">Spring</option>
+                <option value="anim-gentle">Gentle</option>
+                <option value="anim-swift">Swift</option>
+                <option value="anim-cinematic">Cinematic</option>
+            </select>
         `;
         document.body.appendChild(slideshowControls);
+
+        // Style switcher functionality
+        const styleSwitcher = slideshowControls.querySelector('.style-switcher');
+        styleSwitcher.value = 'anim-bounce'; // default
+        styleSwitcher.addEventListener('change', (e) => {
+            const allStyles = ['anim-bounce', 'anim-smooth', 'anim-snap', 'anim-elegant', 'anim-spring', 'anim-gentle', 'anim-swift', 'anim-cinematic'];
+            allStyles.forEach(s => document.body.classList.remove(s));
+            document.body.classList.add(e.target.value);
+        });
 
         function enterPresentationMode() {
             isPresentationMode = true;
