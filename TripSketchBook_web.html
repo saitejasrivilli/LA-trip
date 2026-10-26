@@ -1645,7 +1645,11 @@
         const ALL_EFFECTS = [...Object.keys(PAGE_EFFECTS), ...Object.keys(BOOK_EFFECTS)];
         const effectForMove = {};
         let lastEffect = null;
+        let useConsistentEffect = true; // Use same animation for all pages
+        let consistentEffectName = 'classic'; // Default consistent effect
         function effectFor(a, b) {
+            // If consistent mode enabled, always use the same effect
+            if (useConsistentEffect) return consistentEffectName;
             const key = Math.min(a, b) + '-' + Math.max(a, b);
             if (!effectForMove[key]) {
                 const choices = ALL_EFFECTS.filter(e => e !== lastEffect);
