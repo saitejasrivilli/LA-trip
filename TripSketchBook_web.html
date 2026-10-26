@@ -446,6 +446,10 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease, outline 0.15s ease;
             cursor: grab;
         }
+        /* Disable polaroid transitions during page flip for stability */
+        .page .polaroid, .page .illustration {
+            transition: none;
+        }
         .polaroid:active, .illustration:active { cursor: grabbing; }
         /* Prevent images from capturing drag - let parent polaroid handle it */
         .polaroid img, .illustration img {
@@ -858,13 +862,13 @@
 <!-- Page 0: Cover -->
 <div class="page right flipped" id="page-0" style="z-index: 0; pointer-events: none;">
 <div class="page-content front cover" style="display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;padding:8px;">
-<img alt="LA Skyline" decoding="async" loading="lazy" src="photos/photo-01.jpg" style="width:94%;height:31%;object-fit:cover;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.4);">
+<img alt="LA Skyline" decoding="async"  src="photos/photo-01.jpg" style="width:94%;height:31%;object-fit:cover;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.4);">
 <div style="position:relative;width:94%;height:31%;display:flex;align-items:center;justify-content:center;">
-<img alt="LA Flag" decoding="async" loading="lazy" src="photos/photo-02.jpg" style="height:100%;max-width:100%;object-fit:contain;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.4);">
+<img alt="LA Flag" decoding="async"  src="photos/photo-02.jpg" style="height:100%;max-width:100%;object-fit:contain;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.4);">
 <div class="cover-title" style="position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);text-shadow:3px 3px 6px rgba(0,0,0,0.9),0 0 20px rgba(0,0,0,0.7);font-size:2.5rem;">LA Adventure<br>Sketchbook</div>
 <div class="cover-subtitle" style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);font-size:1.3rem;margin:0;color:#ffd93d;text-shadow:2px 2px 4px rgba(0,0,0,0.8);">October 17-20, 2026</div>
 </div>
-<img alt="Venice Beach" decoding="async" loading="lazy" src="photos/photo-03.jpg" style="width:94%;height:31%;object-fit:cover;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.4);">
+<img alt="Venice Beach" decoding="async"  src="photos/photo-03.jpg" style="width:94%;height:31%;object-fit:cover;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.4);">
 <div class="page-corner right" onclick="nextPage()"></div>
 </div>
 <div class="page-content back deco-page">
@@ -935,13 +939,13 @@
 <div class="day-location" contenteditable="true" spellcheck="false">Route 66 • DTLA Exploration</div>
 <div class="photo-grid triple fit-layout" style="" data-gid="p2-front-0">
 <div aria-pressed="false" class="polaroid" draggable="true" style="cursor: pointer; outline-offset: 2px; width: 230px; left: 93px; top: 14px;" tabindex="0" data-scale="0.94">
-<div class="washi-tape washi-tape-3"></div><img alt="Photo" decoding="async" loading="lazy" src="photos/photo-04.jpg" style="display: block; object-fit: cover; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; width: 218px !important; height: 291px !important;" title="Click: select | Double-click: replace | Right-click: menu">
+<div class="washi-tape washi-tape-3"></div><img alt="Photo" decoding="async"  src="photos/photo-04.jpg" style="display: block; object-fit: cover; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; width: 218px !important; height: 291px !important;" title="Click: select | Double-click: replace | Right-click: menu">
 <button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div>
 <div aria-pressed="false" class="polaroid" draggable="true" style="cursor: pointer; outline-offset: 2px; width: 244px; left: 331px; top: 5px;" tabindex="0">
-<div class="washi-tape washi-tape-4"></div><img alt="Photo" decoding="async" loading="lazy" src="photos/photo-05.jpg" style="display: block; object-fit: cover; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; width: 232px !important; height: 309px !important;" title="Click: select | Double-click: replace | Right-click: menu">
+<div class="washi-tape washi-tape-4"></div><img alt="Photo" decoding="async"  src="photos/photo-05.jpg" style="display: block; object-fit: cover; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; width: 232px !important; height: 309px !important;" title="Click: select | Double-click: replace | Right-click: menu">
 <button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div>
 <div aria-pressed="false" class="polaroid" draggable="true" style="cursor: pointer; outline-offset: 2px; width: 204px; left: 232px; top: 350px;" tabindex="0" data-scale="0.83">
-<div class="washi-tape washi-tape-5"></div><img alt="Photo" decoding="async" loading="lazy" src="photos/photo-06.jpg" style="display: block; object-fit: cover; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; width: 192px !important; height: 257px !important;" title="Click: select | Double-click: replace | Right-click: menu">
+<div class="washi-tape washi-tape-5"></div><img alt="Photo" decoding="async"  src="photos/photo-06.jpg" style="display: block; object-fit: cover; cursor: pointer; background: linear-gradient(135deg, rgb(224, 224, 224), rgb(245, 245, 245)); min-height: 150px; width: 192px !important; height: 257px !important;" title="Click: select | Double-click: replace | Right-click: menu">
 <button class="rotate-btn" title="Rotate 90°">↻</button><button class="view-btn" title="View fullscreen">⤢</button><div class="resize-handle" title="Drag to resize (Shift: stretch freely) · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-right" title="Drag to change width · Double-click: original shape" style="touch-action: none;"></div><div class="resize-edge edge-bottom" title="Drag to change height · Double-click: original shape" style="touch-action: none;"></div><div class="size-zoom-controls"><button type="button" aria-label="Make photo smaller" title="Smaller (−)">−</button><button type="button" aria-label="Make photo larger" title="Larger (+)">+</button></div></div>
 </div>
 <div class="caption" contenteditable="true" spellcheck="false">End of Route 66 • Downtown adventures</div>
@@ -2619,9 +2623,10 @@
             records.forEach(r => {
                 const el = r.target.nodeType === 1 ? r.target : r.target.parentElement;
                 if (!el) return;
+                // Skip page flip class changes - don't trigger layout recalc
+                if (r.type === 'attributes' && r.attributeName === 'class' && el.classList.contains('page')) return;
                 if (r.type === 'childList') {
                     r.addedNodes.forEach(n => { if (n.nodeType === 1 && (n.matches('.photo-grid') || n.querySelector('.photo-grid'))) newGrids = true; });
-                    // A polaroid moved between grids changes both of them
                     r.removedNodes.forEach(n => { if (n.nodeType === 1 && n.classList.contains('polaroid')) scheduleFit(el.closest('.photo-grid') || (el.matches('.photo-grid') ? el : null)); });
                 }
                 scheduleFit(el.matches('.photo-grid') ? el : el.closest('.photo-grid'));
