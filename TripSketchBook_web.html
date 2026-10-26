@@ -1252,8 +1252,16 @@
         console.log("SCRIPT STARTED");
         let currentPage = 0;
 
-        // Fix initial state: remove 'flipped' class from all pages so book starts at cover
-        document.querySelectorAll('.page.flipped').forEach(p => p.classList.remove('flipped'));
+        // Fix initial state: remove 'flipped' class WITHOUT animation
+        document.querySelectorAll('.page').forEach(p => {
+            p.style.transition = 'none';  // Disable transition
+            p.classList.remove('flipped');
+        });
+        // Force reflow then re-enable transitions
+        document.body.offsetHeight;
+        requestAnimationFrame(() => {
+            document.querySelectorAll('.page').forEach(p => p.style.transition = '');
+        });
 
         // Image processing - handles HEIC natively on Safari, converts on other browsers
         async function processImageFile(file, callback) {
