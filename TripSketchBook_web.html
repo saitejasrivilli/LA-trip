@@ -1596,8 +1596,8 @@
         // Page effects animate the turning sheet; book effects animate the whole book.
         const ROT = (deg, extra = '') => `rotateY(${deg}deg) ${extra}`.trim();
         const PAGE_EFFECTS = {
-            classic: { duration: 900, easing: 'cubic-bezier(.645,.045,.355,1)', frames: [
-                { transform: ROT(0) }, { transform: ROT(-180) }] },
+            classic: { duration: 800, easing: 'ease-in-out', frames: [
+                { transform: 'rotateY(0deg)' }, { transform: 'rotateY(-180deg)' }] },
             lift: { duration: 1000, easing: 'ease-in-out', frames: [
                 { transform: ROT(0, 'translateZ(0) scale(1)') },
                 { transform: ROT(-90, 'translateZ(140px) scale(1.06)'), offset: 0.5 },
