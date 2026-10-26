@@ -1649,7 +1649,8 @@
                 out: [{ transform: 'rotate(0deg) scale(1)', opacity: 1 }, { transform: 'rotate(-12deg) scale(0.6)', opacity: 0 }],
                 in:  [{ transform: 'rotate(12deg) scale(0.6)', opacity: 0 }, { transform: 'rotate(0deg) scale(1)', opacity: 1 }] }
         };
-        const ALL_EFFECTS = [...Object.keys(PAGE_EFFECTS), ...Object.keys(BOOK_EFFECTS)];
+        // Only use page effects - book effects cause image overlap during transition
+        const ALL_EFFECTS = Object.keys(PAGE_EFFECTS);
         const effectForMove = {};
         let lastEffect = null;
         let useConsistentEffect = false; // Enable variety of effects
