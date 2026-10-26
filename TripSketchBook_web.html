@@ -1652,7 +1652,7 @@
         const ALL_EFFECTS = [...Object.keys(PAGE_EFFECTS), ...Object.keys(BOOK_EFFECTS)];
         const effectForMove = {};
         let lastEffect = null;
-        let useConsistentEffect = true; // Use same animation for all pages
+        let useConsistentEffect = false; // Enable variety of effects
         let consistentEffectName = 'classic'; // Default consistent effect
         function effectFor(a, b) {
             // If consistent mode enabled, always use the same effect
@@ -1738,8 +1738,19 @@
             const page = document.getElementById(`page-${dir > 0 ? from : to}`);
             if (!page) return;
             const flipped = dir > 0;
-            // Use pure CSS transitions for smooth, consistent animation across all devices
-            setTurnState(page, flipped, to);
+            // Pick effect for this page pair (stored for reverse navigation)
+            const name = effectFor(from, to);
+            // Run appropriate effect type
+            if (PAGE_EFFECTS[name]) {
+                activeTurn = runPageEffect(PAGE_EFFECTS[name], dir, page, flipped, to);
+            } else if (BOOK_EFFECTS[name]) {
+                activeTurn = runBookEffect(BOOK_EFFECTS[name], dir, page, flipped, to);
+            } else {
+                // Fallback to CSS transition
+                setTurnState(page, flipped, to);
+            }
+            // Preload upcoming pages
+            preloadNextPages(to);
         }
 
         function nextPage() {
