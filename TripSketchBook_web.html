@@ -1248,6 +1248,9 @@
         console.log("SCRIPT STARTED");
         let currentPage = 0;
 
+        // Fix initial state: remove 'flipped' class from all pages so book starts at cover
+        document.querySelectorAll('.page.flipped').forEach(p => p.classList.remove('flipped'));
+
         // Image processing - handles HEIC natively on Safari, converts on other browsers
         async function processImageFile(file, callback) {
             console.log("Processing file:", file.name, "type:", file.type);
@@ -2119,11 +2122,8 @@
                     return false;
                 }
 
-                // Auto-recover without prompting
-                applyGridStates(saved.grids, false);
-                setupImageHandlers();
-                updateStatusIndicator('recovered');
-                return true;
+                // Skip auto-recover for deployed version - always start fresh
+                return false;
             } catch (e) {
                 console.warn('Recovery failed:', e);
             }
